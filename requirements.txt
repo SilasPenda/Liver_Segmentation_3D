@@ -1,0 +1,10 @@
+albumentations
+numpy
+pillow
+pyyaml
+scipy
+scikit-image
+tqdm
+torch
+torchvision
+torchaudio
