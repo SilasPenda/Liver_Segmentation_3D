@@ -1,4 +1,4 @@
-train_path: "C:/Users/penda/Desktop/Workspace/My_Projects/Pytorch_Tutorial/U-Net_for_Image_Segmentation/2D_Segmentation/erythrocyte_data/train"
-val_path: "C:/Users/penda/Desktop/Workspace/My_Projects/Pytorch_Tutorial/U-Net_for_Image_Segmentation/2D_Segmentation/erythrocyte_data/val"
-n_classes: 3
-img_channels: 3
+train_path: "C:/Users/penda/Documents/Study Materials/Machine and Deep Learning/Project/Liver_Segmentation_3D/data/train"
+val_path: "C:/Users/penda/Documents/Study Materials/Machine and Deep Learning/Project/Liver_Segmentation_3D/data/val"
+n_classes: 2
+img_channels: 1
