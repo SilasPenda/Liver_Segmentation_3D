@@ -1,10 +1,8 @@
 albumentations
 numpy
-pillow
+nibabel
 pyyaml
-scipy
-scikit-image
 tqdm
-torch
-torchvision
-torchaudio
+# torch
+# torchvision
+# torchaudio
