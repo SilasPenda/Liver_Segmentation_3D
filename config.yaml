@@ -1,4 +1,8 @@
-train_path: "C:/Users/penda/Documents/Study Materials/Machine and Deep Learning/Project/Liver_Segmentation_3D/data/train"
-val_path: "C:/Users/penda/Documents/Study Materials/Machine and Deep Learning/Project/Liver_Segmentation_3D/data/val"
+train_path: "/work/c-2iia/sp165339/Liver_Segmentation_3D/data/train"
+val_path: "/work/c-2iia/sp165339/Liver_Segmentation_3D/data/val"
+
+# train_path: "C:/Users/penda/Documents/Study Materials/Machine and Deep Learning/Project/Liver_Segmentation_3D/data/train"
+# val_path: "C:/Users/penda/Documents/Study Materials/Machine and Deep Learning/Project/Liver_Segmentation_3D/data/val"
+
 n_classes: 2
 img_channels: 1
