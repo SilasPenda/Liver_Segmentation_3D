@@ -13,16 +13,13 @@ export PYTHONIOENCODING=utf8
 ## printf "\n Job started at : $(date)\n-----\n\n"
  
 ## what do we need? modules, envs etc.
-<<<<<<< HEAD
 module purge ## clear out the current module list
 module load python/3.9.10
 ## source /work/c-2iia/sp165339/venv/bin/activate
-=======
 ## module purge ## clear out the current module list
 ## module load python/3.10
 export PYTHONUSERBASE=/work/c-2iia/sp165339/venv/
 export PATH=/work/c-2iia/sp165339/venv/bin
->>>>>>> 8fb803f3f24f75c6bf42894cae0e3d71a24dbc73
 module load pytorch/2.0.0/gpu
 module list
 
