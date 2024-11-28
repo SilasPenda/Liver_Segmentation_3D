@@ -9,9 +9,10 @@
 printf "\n Job started at : $(date)\n-----\n\n"
  
 ## what do we need? modules, envs etc.
-module purge ## clear out the current module list
-# module load python/3.10
-export PYTHONUSERBASE=/work/c-2iia/sp165339/LS3D_venv
+## module purge ## clear out the current module list
+## module load python/3.10
+export PYTHONUSERBASE=/work/c-2iia/sp165339/venv/
+export PATH=/work/c-2iia/sp165339/venv/bin
 module load pytorch/2.0.0/gpu
 module list
 
