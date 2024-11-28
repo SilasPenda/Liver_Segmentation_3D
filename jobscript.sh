@@ -29,7 +29,7 @@ module list
 cd /work/c-2iia/sp165339/Liver_Segmentation_3D
 
 ## run script
-python train.py
+python train.py --epochs 100
 
 
 ## printf "\n --- end of python execution ---\n\n"
