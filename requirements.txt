@@ -1,8 +1,10 @@
-albumentations
+# albumentations
 numpy
 nibabel
+matplotlib
 pyyaml
 tqdm
-# torch
-# torchvision
-# torchaudio
+torch
+torchvision
+torchaudio
+torchsummary
