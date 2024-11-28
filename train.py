@@ -9,7 +9,7 @@ import torch.nn as nn
 
 from src.dataset import get_data_loaders
 
-from src.models import UNet3D
+from src.model import UNet3D
 from src.utils import get_config, dice_loss, save_checkpoint, load_checkpoint
 
 def main():
