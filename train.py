@@ -48,6 +48,7 @@ def main():
     
     model = UNet3D(img_channels, n_classes)
     model.to(device)
+    scaler = torch.amp.GradScaler("cuda")
 
     if args.checkpoint is not None:
         load_checkpoint(torch.load(args.checkpoint), model)
@@ -62,24 +63,29 @@ def main():
         # Training phase
         model.train()
         running_train_loss = 0.0
-        correct_train = 0
         for images, masks in tqdm(train_loader, desc="Training"):
           
-            images = images.to(device, dtype=torch.float32)
+            images = images.to(device)
             masks = masks.to(device, dtype=torch.long).squeeze(1)
         
-            # Forward pass
-            preds = model(images)
-            #   loss = criterion(pred, masks)
-            loss = dice_loss(preds, masks)
-            running_train_loss += loss.item()
+            optimizer.zero_grad()
+        
+            with torch.amp.autocast("cuda"):
+                # Forward pass
+                preds = model(images)
+                #   loss = criterion(pred, masks)
+                loss = dice_loss(preds, masks)
+                running_train_loss += loss.item()
         
             # dice = dice_score(pred , masks, n_classes)
 
             # Backward pass
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+            # loss.backward()
+            # optimizer.step()
+
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
         
         train_loss = running_train_loss / len(train_loader)
 
@@ -90,7 +96,7 @@ def main():
         correct_val = 0
         with torch.no_grad():
             for images, masks in tqdm(val_loader, desc="Validation"):
-                images = images.to(device, dtype=torch.float32)
+                images = images.to(device)
                 masks = masks.to(device, dtype=torch.long)
 
                 preds = model(images)
