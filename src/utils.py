@@ -56,22 +56,22 @@ def dice_loss(pred, target, smooth=1e-6):
 
 #     return dice
 
-def dice_score(pred, target, num_classes):
-    """Calculate the Dice score for multiclass segmentation."""
-    smooth = 1e-6
-    dice = 0.0
+# def dice_score(pred, target, num_classes):
+#     """Calculate the Dice score for multiclass segmentation."""
+#     smooth = 1e-6
+#     dice = 0.0
 
-    # Apply softmax to get class probabilities and then calculate Dice per class
-    for i in range(num_classes):
-        # Binary mask for class i
-        pred_i = pred[:, i, :, :]  # Predicted probabilities for class i
-        target_i = (target == i).float()  # True mask for class i
+#     # Apply softmax to get class probabilities and then calculate Dice per class
+#     for i in range(num_classes):
+#         # Binary mask for class i
+#         pred_i = pred[:, i, :, :]  # Predicted probabilities for class i
+#         target_i = (target == i).float()  # True mask for class i
 
-        # Calculate Dice for class i
-        intersection = (pred_i * target_i).sum()
-        union = pred_i.sum() + target_i.sum()
-        dice += (2.0 * intersection + smooth) / (union + smooth)
+#         # Calculate Dice for class i
+#         intersection = (pred_i * target_i).sum()
+#         union = pred_i.sum() + target_i.sum()
+#         dice += (2.0 * intersection + smooth) / (union + smooth)
 
-    # Average Dice score across all classes
-    return dice / num_classes
+#     # Average Dice score across all classes
+#     return dice / num_classes
 
