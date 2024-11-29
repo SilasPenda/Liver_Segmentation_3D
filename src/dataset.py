@@ -20,6 +20,13 @@ class LoadTransformDataset(Dataset):
         self.labels = sorted(os.listdir(labels_dir))
         self.transform = transform
 
+        self.color_to_class = {
+            (0, 0, 0): 0,       # Background
+            (255, 0, 0): 1,     # elongated
+            (0, 255, 0): 2,     # circular
+            (0, 0, 255): 3      # other
+        }
+
     def __len__(self):
         return len(self.images)
 
