@@ -20,23 +20,8 @@ class LoadTransformDataset(Dataset):
         self.labels = sorted(os.listdir(labels_dir))
         self.transform = transform
 
-        self.color_to_class = {
-            (0, 0, 0): 0,       # Background
-            (255, 0, 0): 1,     # elongated
-            (0, 255, 0): 2,     # circular
-            (0, 0, 255): 3      # other
-        }
-
     def __len__(self):
         return len(self.images)
-
-    def rgb_to_class(self, mask):
-      """Convert an RGB mask to class indices."""
-      class_mask = np.zeros(mask.shape[:2], dtype=np.uint8)
-      for rgb, cls in self.color_to_class.items():
-          class_mask[np.all(mask == rgb, axis=-1)] = cls
-          
-      return class_mask
     
     def __getitem__(self, idx):
         # Get image and corresponding label paths
