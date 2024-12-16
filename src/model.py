@@ -28,7 +28,6 @@ class UNet3D(nn.Module):
         self.bottle_neck = self.conv_block(features[-1], features[-1]*2)
 
         # Final layer
-        # self.final_conv = nn.Conv2d(features[0], n_classes, kernel_size=1)
         self.final_conv = nn.Conv3d(features[0], n_classes, kernel_size=1)
     
     def forward(self, x):
@@ -68,10 +67,10 @@ class UNet3D(nn.Module):
     def conv_block(self, in_channels, out_channels):
         return nn.Sequential(
             nn.Conv3d(in_channels, out_channels, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm3d(out_channels),
+            # nn.BatchNorm3d(out_channels),
             nn.ReLU(inplace=True),
             nn.Conv3d(out_channels, out_channels, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm3d(out_channels),
+            # nn.BatchNorm3d(out_channels),
             nn.ReLU(inplace=True)
         )
 

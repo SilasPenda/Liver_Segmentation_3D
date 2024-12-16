@@ -96,7 +96,7 @@ def get_data_loaders():
     train_dataset = LoadTransformDataset(images_dir=train_images_dir, labels_dir=train_labels_dir)
     val_dataset = LoadTransformDataset(images_dir=val_images_dir, labels_dir=val_labels_dir)
 
-    batch_size = 4
+    batch_size = 1
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=pad_collate_fn, num_workers=2)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, collate_fn=pad_collate_fn, num_workers=2)
 
