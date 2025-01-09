@@ -6,6 +6,7 @@ data
 models
 results
 tests.ipynb
+src/model2.py
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
