@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import Dataset, DataLoader
 import torch.nn.functional as F
-from src.utils import get_config
+from utils import get_config
 
 
 class LoadTransformDataset(Dataset):
@@ -49,36 +49,6 @@ class LoadTransformDataset(Dataset):
 
         return image, label
 
-    
-def pad_tensor(tensor, max_depth, max_height, max_width):
-    # Get the current shape of the tensor
-    depth, height, width = tensor.shape[-3], tensor.shape[-2], tensor.shape[-1]
-
-    # Calculate the padding required
-    pad_depth = max_depth - depth
-    pad_height = max_height - height
-    pad_width = max_width - width
-
-    # Pad the tensor
-    padded_tensor = F.pad(tensor, (0, pad_width, 0, pad_height, 0, pad_depth))
-    
-    return padded_tensor
-
-def pad_collate_fn(batch):
-    # Get the maximum depth, height, and width for the batch
-    max_depth = max([item[0].shape[-3] for item in batch]) 
-    max_height = max([item[0].shape[-2] for item in batch])
-    max_width = max([item[0].shape[-1] for item in batch])
-
-    # Apply padding to each image and label
-    padded_images = [pad_tensor(img, max_depth, max_height, max_width) for img, _ in batch]
-    padded_labels = [pad_tensor(lbl, max_depth, max_height, max_width) for _, lbl in batch]
-
-    # Stack the images and labels into batches
-    batch_images = torch.stack(padded_images)
-    batch_labels = torch.stack(padded_labels)
-
-    return batch_images, batch_labels
 
 def get_data_loaders():
     # Loading config and setting up paths (same as before)
@@ -96,61 +66,11 @@ def get_data_loaders():
     train_dataset = LoadTransformDataset(images_dir=train_images_dir, labels_dir=train_labels_dir)
     val_dataset = LoadTransformDataset(images_dir=val_images_dir, labels_dir=val_labels_dir)
 
-    batch_size = 1
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=pad_collate_fn, num_workers=2)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, collate_fn=pad_collate_fn, num_workers=2)
+    batch_size = 2
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False,  num_workers=2)
 
     return train_loader, val_loader
-
-
-
-# def get_data_loaders(IMAGE_HEIGHT, IMAGE_WIDTH):
-    # train_transform = A.Compose(
-    #     [
-    #         # A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH),
-    #         A.Rotate(limit=35, p=1.0),
-    #         A.HorizontalFlip(p=0.5),
-    #         A.VerticalFlip(p=0.1),
-    #         A.Normalize(
-    #             mean=[0.0, 0.0, 0.0],
-    #             std=[1.0, 1.0, 1.0],
-    #             max_pixel_value=255.0,
-    #         ),
-    #         ToTensorV2(),
-    #     ],
-    # )
-
-    # val_transforms = A.Compose(
-    #     [
-    #         # A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH),
-    #         A.Normalize(
-    #             mean=[0.0, 0.0, 0.0],
-    #             std=[1.0, 1.0, 1.0],
-    #             max_pixel_value=255.0,
-    #         ),
-    #         ToTensorV2(),
-    #     ],
-    # )
-
-    # # Loading config and setting up paths (same as before)
-    # config = get_config(config_filepath='./config.yaml')
-    # train_path = config.get('train_path', None)
-    # val_path = config.get('val_path', None)
-
-    # train_images_dir = os.path.join(train_path, "images")
-    # train_labels_dir = os.path.join(train_path, "masks")
-    # val_images_dir = os.path.join(val_path, "images")
-    # val_labels_dir = os.path.join(val_path, "masks")
-
-    # # Create dataset and DataLoader
-    # train_dataset = LoadTransformDataset(images_dir=train_images_dir, labels_dir=train_labels_dir, transform=train_transform)
-    # val_dataset = LoadTransformDataset(images_dir=val_images_dir, labels_dir=val_labels_dir, transform=val_transforms)
-
-    # batch_size = 2
-    # train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, pin_memory=True, num_workers=2)
-    # val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, pin_memory=True, num_workers=2)
-
-    # return train_loader, val_loader
 
 
 
@@ -159,7 +79,7 @@ if __name__ == "__main__":
 
     for image, label in val_loader:
         slice_idx = image.shape[2] // 2  # Take the middle slice along the depth axis
-
+        print(np.unique(label[0]))
         plt.figure(figsize=(10, 10))
 
         # Display the middle slice of the image
