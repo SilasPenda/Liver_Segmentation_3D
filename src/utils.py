@@ -71,7 +71,7 @@ def get_config(config_filepath: str) -> dict:
 def dice_coefficient_loss(pred, target, smooth=1):
     pred = torch.softmax(pred, dim=1)  # Assuming multi-class segmentation
     target_one_hot = torch.nn.functional.one_hot(target, num_classes=pred.size(1)).permute(0, 4, 1, 2, 3).float()
-    print(target_one_hot.shape)
+    # print(target_one_hot.shape)
 
     intersection = (pred * target_one_hot).sum(dim=(2, 3, 4))
     union = pred.sum(dim=(2, 3, 4)) + target_one_hot.sum(dim=(2, 3, 4))
