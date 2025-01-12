@@ -37,7 +37,7 @@ def main():
     #     loss_fn = nn.BCEWithLogitsLoss()
     #     activ_func = "Sigmoid"
     # else:
-    # criterion = nn.CrossEntropyLoss()
+    criterion = nn.CrossEntropyLoss()
 
     # scaler = torch.GradScaler()
 
@@ -48,7 +48,6 @@ def main():
     
     model = UNet3D(img_channels, n_classes)
     model.to(device)
-    scaler = torch.amp.GradScaler("cuda")
 
     if args.checkpoint is not None:
         load_checkpoint(torch.load(args.checkpoint), model)
@@ -73,8 +72,8 @@ def main():
             # with torch.amp.autocast("cuda"):
                 # Forward pass
             preds = model(images)
-            #   loss = criterion(pred, masks)
-            loss = dice_coefficient_loss(preds, labels)
+            loss = criterion(preds, labels)
+            # loss = dice_coefficient_loss(preds, labels)
             running_train_loss += loss.item()
         
             # dice = dice_score(pred , masks, n_classes)
@@ -100,8 +99,8 @@ def main():
                 labels = labels.to(device, dtype=torch.long).squeeze(1)
 
                 preds = model(images)
-                # loss = criterion(pred, masks)
-                loss = dice_coefficient_loss(preds, labels)
+                loss = criterion(preds, labels)
+                # loss = dice_coefficient_loss(preds, labels)
                 running_val_loss += loss.item()
 
         val_loss = running_val_loss / len(val_loader)
