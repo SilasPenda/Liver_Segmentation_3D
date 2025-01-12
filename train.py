@@ -107,8 +107,10 @@ def main():
         val_loss = running_val_loss / len(val_loader)
 
         print(f"Epoch {epoch + 1}/{num_epochs} - "
-            f"Train Loss: {train_loss:.2f}, - "
-            f"Val Loss: {val_loss:.2f}")
+            f"Train Dice : {1 - train_loss:.2f}, - "
+            f"Train Dice Loss: {train_loss:.2f}, - "
+            f"Val Dice: {val_loss:.2f}, - "
+            f"Val Dice Loss: {1 - val_loss:.2f}")
         
         # plot loss
         plt.figure(figsize=(10, 10))
