@@ -63,10 +63,10 @@ def main():
         # Training phase
         model.train()
         running_train_loss = 0.0
-        for images, masks in tqdm(train_loader, desc="Training"):
+        for images, labels in tqdm(train_loader, desc="Training"):
           
             images = images.to(device)
-            masks = masks.to(device, dtype=torch.long).squeeze(1)
+            labels = labels.to(device, dtype=torch.long).squeeze(1)
         
             optimizer.zero_grad()
         
@@ -74,7 +74,7 @@ def main():
                 # Forward pass
                 preds = model(images)
                 #   loss = criterion(pred, masks)
-                loss = dice_coefficient_loss(preds, masks)
+                loss = dice_coefficient_loss(preds, labels)
                 running_train_loss += loss.item()
         
             # dice = dice_score(pred , masks, n_classes)
@@ -95,13 +95,13 @@ def main():
         running_val_loss = 0.0
         correct_val = 0
         with torch.no_grad():
-            for images, masks in tqdm(val_loader, desc="Validation"):
+            for images, labels in tqdm(val_loader, desc="Validation"):
                 images = images.to(device)
-                masks = masks.to(device, dtype=torch.long)
+                labels = labels.to(device, dtype=torch.long).squeeze(1)
 
                 preds = model(images)
                 # loss = criterion(pred, masks)
-                loss = dice_coefficient_loss(preds, masks)
+                loss = dice_coefficient_loss(preds, labels)
                 running_val_loss += loss.item()
 
         val_loss = running_val_loss / len(val_loader)
