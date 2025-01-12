@@ -70,22 +70,22 @@ def main():
         
             optimizer.zero_grad()
         
-            with torch.amp.autocast("cuda"):
+            # with torch.amp.autocast("cuda"):
                 # Forward pass
-                preds = model(images)
-                #   loss = criterion(pred, masks)
-                loss = dice_coefficient_loss(preds, labels)
-                running_train_loss += loss.item()
+            preds = model(images)
+            #   loss = criterion(pred, masks)
+            loss = dice_coefficient_loss(preds, labels)
+            running_train_loss += loss.item()
         
             # dice = dice_score(pred , masks, n_classes)
 
             # Backward pass
-            # loss.backward()
-            # optimizer.step()
+            loss.backward()
+            optimizer.step()
 
-            scaler.scale(loss).backward()
-            scaler.step(optimizer)
-            scaler.update()
+            # scaler.scale(loss).backward()
+            # scaler.step(optimizer)
+            # scaler.update()
         
         train_loss = running_train_loss / len(train_loader)
 

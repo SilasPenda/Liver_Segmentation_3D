@@ -42,29 +42,42 @@ def dice_loss(pred, target, smooth=1e-6):
 
     
     
-def dice_coefficient_loss(pred, target, smooth=1e-6):
-    # pred: [batch, channels, height, width], pred should be softmax probabilities
-    # target: [batch, height, width], target should be indices of classes (0 to C-1)
+# def dice_coefficient_loss(pred, target, smooth=1e-6):
+#     # pred: [batch, channels, height, width], pred should be softmax probabilities
+#     # target: [batch, height, width], target should be indices of classes (0 to C-1)
 
-    print(f"pred shape: {pred.shape}")
-    print(f"target shape: {target.shape}")
+#     # print(f"pred shape: {pred.shape}")
+#     # print(f"target shape: {target.shape}")
 
     
-    pred = torch.softmax(pred, dim=1)  # Apply softmax to obtain probabilities
-    C = pred.shape[1]  # Number of classes
+#     pred = torch.softmax(pred, dim=1)  # Apply softmax to obtain probabilities
+#     C = pred.shape[1]  # Number of classes
 
-    dice = 0
-    for c in range(C):
-        pred_c = pred[:, c, :, :]
-        target_c = (target == c).float()  # Create a mask for class c
+#     dice = 0
+#     for c in range(C):
+#         pred_c = pred[:, c, :, :]
+#         target_c = (target == c).float()  # Create a mask for class c
 
-        intersection = (pred_c * target_c).sum((1, 2))  # Sum over each image separately
-        union = pred_c.sum((1, 2)) + target_c.sum((1, 2))
+#         intersection = (pred_c * target_c).sum((1, 2))  # Sum over each image separately
+#         union = pred_c.sum((1, 2)) + target_c.sum((1, 2))
 
-        dice_c = (2. * intersection + smooth) / (union + smooth)
-        dice += dice_c.mean()  # Average over all images in the batch
+#         dice_c = (2. * intersection + smooth) / (union + smooth)
+#         dice += dice_c.mean()  # Average over all images in the batch
 
-    return 1.0 - dice / C  # Average over all classes
+#     return 1.0 - dice / C  # Average over all classes
+
+
+
+def dice_coefficient_loss(pred, target, smooth=1e-6):
+    pred = torch.softmax(pred, dim=1)  # Assuming multi-class segmentation
+    target_one_hot = torch.nn.functional.one_hot(target, num_classes=pred.size(1)).permute(0, 4, 1, 2, 3).float()
+
+    intersection = (pred * target_one_hot).sum(dim=(2, 3, 4))
+    union = pred.sum(dim=(2, 3, 4)) + target_one_hot.sum(dim=(2, 3, 4))
+    dice = (2. * intersection + smooth) / (union + smooth)
+    
+    return 1 - dice.mean()
+
 
     
 # def dice_score(pred, target, smooth=1e-6):
