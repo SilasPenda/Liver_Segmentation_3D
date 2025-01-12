@@ -8,8 +8,7 @@ import matplotlib.pyplot as plt
 
 import torch
 from torch.utils.data import Dataset, DataLoader
-import torch.nn.functional as F
-from utils import get_config
+from src.utils import get_config
 
 
 class LoadTransformDataset(Dataset):
