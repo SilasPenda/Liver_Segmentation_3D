@@ -10,7 +10,7 @@ import torch.nn as nn
 from src.dataset import get_data_loaders
 
 from src.model import UNet3D
-from src.utils import get_config, dice_loss, save_checkpoint, load_checkpoint
+from src.utils import get_config, dice_coefficient_loss, save_checkpoint, load_checkpoint
 
 def main():
     parser = argparse.ArgumentParser(description='Train a 2D U-Net Segmentation model.')
@@ -74,7 +74,7 @@ def main():
                 # Forward pass
                 preds = model(images)
                 #   loss = criterion(pred, masks)
-                loss = dice_loss(preds, masks)
+                loss = dice_coefficient_loss(preds, masks)
                 running_train_loss += loss.item()
         
             # dice = dice_score(pred , masks, n_classes)
@@ -101,7 +101,7 @@ def main():
 
                 preds = model(images)
                 # loss = criterion(pred, masks)
-                loss = dice_loss(preds, masks)
+                loss = dice_coefficient_loss(preds, masks)
                 running_val_loss += loss.item()
 
         val_loss = running_val_loss / len(val_loader)
